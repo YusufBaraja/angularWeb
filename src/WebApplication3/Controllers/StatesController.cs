@@ -130,13 +130,18 @@ namespace WebApplication3.Controllers
 
             State state = await _context.State.SingleOrDefaultAsync(m => m.Id == id);
             Item item = await _context.Item.SingleOrDefaultAsync(i => i.StateId == id);
-            if (state == null || item == null)
+
+            if (state == null)
             {
                 return NotFound();
             }
 
             _context.State.Remove(state);
-            _context.Item.Remove(item);
+
+            if (item != null)
+            {
+                _context.Item.Remove(item);
+            }
             await _context.SaveChangesAsync();
             return Ok(state);
         }

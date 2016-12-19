@@ -1,4 +1,4 @@
-﻿{
+{
   "userSecretsId": "aspnet-WebApplication3-ddeaeff5-55b7-40d9-a056-8d0f71030227",
 
   "dependencies": {
@@ -48,7 +48,8 @@
       "type": "build"
     },
     "angularjs": "1.5.8",
-    "Microsoft.AspNetCore.Cors": "1.0.0"
+    "Microsoft.AspNetCore.Cors": "1.0.0",
+    "VisualStudio.gitignore": "1.0.1"
   },
 
   "tools": {
