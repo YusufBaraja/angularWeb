@@ -1,0 +1,152 @@
+﻿@{
+    ViewData["Title"] = "Kanban";
+}
+
+<style type="text/css">
+    /*.modal-sm {
+      padding:30px 20px;height: 262px;
+}*/
+</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Kanban Project Management</title>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.0.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/signalr/jquery.signalr-2.2.0.min.js"></script>
+    <script src="signalr/hubs"></script>
+
+    <!-- Angular framwork. -->
+    <script src="~/lib/angular/angular.js"></script>
+
+    <!-- DlhSoft component references. TypeScript: DlhSoft.Kanban.Angular.Components.ts. -->
+
+
+    <script src="~/js/DlhSoft.Kanban.Angular.Components.js"></script>
+    <!-- Sample application references. TypeScript: app.ts. -->
+    <link href="~/css/DlhSoft.Kanban.Angular.Components.css" rel="stylesheet" />
+
+
+    <script src="~/js/app.js"></script>
+</head>
+<!-- Sample application user interface. -->
+<body ng-app="KanbanBoardSample" ng-controller="MainController">
+    <header>
+        <h1>Kanban Project Managements</h1>
+    </header>
+    <!-- Kanban board component. -->
+    <ds:kanban-board items="items" groups="groups" states="states" assignable-resources="assignableResources"
+                     on-adding-new-item="initializeNewItem(item)" on-editing-item="deleteItem(item)"
+                     edit-item-button-text="'×'" edit-item-button-tool-tip="'Delete item'"
+                     on-item-state-changed="onItemStateChanged(item, state)" on-item-group-changed="onItemGroupChanged(item, group)">
+    </ds:kanban-board>
+    <!-- Drop zone: provides support for dropping Kanban items to external user interface elements. -->
+    <ds:kanban-item-drop-zone on-drop="moveItemToNextIteration(type, index)"
+                              class="next-iteration-panel"
+                              title="Drag items to this external panel to set them as future work.">
+        @*<div class="header">Next iteration - future work</div>
+            <div class="content">
+                <div class="value">{{ nextIteration.groups.length }} story(-ies)</div>
+                <div class="value">{{ nextIteration.items.length }} item(s)</div>
+            </div>*@
+        @*<button class="fa fa-plus-circle" data-toggle="tooltip" title="Add new card" ng-click="addNewGroup()"></button>*@
+        <button  class="fa fa-plus-circle" data-toggle="tooltip" title="Add new card" ng-click="addNewGroup()"></button>
+    </ds:kanban-item-drop-zone>
+    @*<div class="container">
+        <input type="text" id="message" />
+        <input type="button" id="sendmessage" value="Send" />
+        <input type="hidden" id="displayname" />
+        <ul id="discussion"></ul>
+    </div>*@
+    <div class="panel-body">
+        <div class="modal fade" id="AddState" role="dialog" >
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content" style="padding:30px 20px" >
+                    <div class="modal-header">
+                        <h3 class="text-info">Add State Name</h3>
+                    </div>
+                    <div class="modal-body">
+                        <input class="form-control" id="StateNameId" name="StateName1" ng-model="StateName" placeholder="State Name" required />
+                        <br />
+                        <button class="btn-primary" ng-click="addNewState(StateName)" data-dismiss="modal">Add State</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="modal fade" id="ViewDescription" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h3 class="text-info">Add Detail Description</h3>
+                    </div>
+                    <div class="modal-body">
+                        <input class="form-control" readonly="readonly" name="id" ng-model="newId" type="hidden" placeholder="Employee Number" required />
+                        <textarea rows="8" cols="190" wrap="hard" autofocus id="txtDescription" ng-model="newDescription"></textarea><br />
+
+                        <button type="button" class="btn btn-default" id="btnUpdate" ng-click="saveItemDetail(newId,newDescription)">Add</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <br />
+                        <div ng-repeat="itd in ItemDetail">
+                            <p>No.{{$index + 1}} <button class="fa fa-remove pull-right" ng-click="DeleteItemDetail(itd)" title="remove description" data-target="#DeleteItemDetail" data-toggle="modal"></button></p>
+                            <p>{{itd.description}}</p>
+                            <br />
+                            <br />
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="panel-body">
+        <div class="modal fade" id="DeleteState" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content" style="padding:30px 20px; height: 250px">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Are you sure want to delete this data? All items on this state also will be deleted</h4>
+                    </div>
+                    <div class="modal-body">      
+                        <input class="form-control" readonly="readonly" name="modalstate" ng-model="modalstate"  type="hidden" />
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-danger"  ng-click="DeleteState(modalstate)" data-dismiss="modal">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+@*<body ng-app="myangularapp" ng-controller="crudcontroller">
+    </body>*@
+
+</html>
+
+<style type="text/css">
+    .modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body{
+    height: 250px;
+    overflow-y: auto;
+}
+</style>
+
+
+        <script src="~/js/stateService.js"></script>
+        <script src="~/js/resourceService.js"></script>
+        <script src="~/js/groupService.js"></script>
+        <script src="~/js/itemService.js"></script>
+        <script src="~/js/ItemDetailController.js"></script>
+        <script src="~/js/itemDetailService.js"></script>

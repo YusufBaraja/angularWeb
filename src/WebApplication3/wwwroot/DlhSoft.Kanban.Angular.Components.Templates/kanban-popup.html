@@ -1,0 +1,45 @@
+﻿<div class="dskb">
+    <div class="panel">
+        <div class="panel-heading">
+            Contact List
+        </div>
+        <div class="panel-body">
+            <div class="modal" id="ViewDescription" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h3 class="text-info">Update Contact</h3>
+                        </div>
+                        <div class="modal-body">
+                            @*Update Employee form starts here...*@
+                            <form class="form-horizontal" name="ViewDescriptionForm">
+                                <div class="form-group">
+
+                                    <input class="form-control" readonly="readonly" name="id" ng-model="newId" type="hidden" placeholder="Employee Number" required />
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info">  Name</label>
+                                    <input class="form-control" name="name" ng-model="newName" type="text" placeholder="Name" required />
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info"> Phone Number</label>
+                                    <input class="form-control" name="phoneNumber" ng-model="newPhoneNumber" type="text" placeholder="Phone Number" required />
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info">Address</label>
+                                    <input class="form-control" name="address" ng-model="newAddress" type="text" placeholder="Address" required />
+                                </div>
+
+                            </form>
+                        </div>
+                        <!--<div class="modal-footer">
+                            <button type="button" class="btn btn-default" id="btnUpdate" data-dismiss="modal" ng-click="update()">Update</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
